@@ -80,11 +80,81 @@ You can pass a lambda as a function parameter. Check [std::for_each](#stdfor_eac
 
 ## Strongly-typed enum
 
+Traditional C++ enums implicitly convert to int, thus the underlying type cannot be specified:
+```
+enum Fuel { Petrol, Diesel };
+
+enum CPU_brand { Intel, AMD };
+
+Fuel fuel = Fuel::Diesel;
+CPU_brand cpu = CPU_brand::AMD;
+
+bool b = (fuel == cpu);     // Will be true!!
+```
+
+`enum class` resolves this issue and does not export it's enumeration in the surrounding scope.
+
+```
+enum Fuel { Petrol, Diesel };
+
+enum CPU_brand { Intel, AMD };
+
+Fuel fuel = Fuel::Diesel;
+CPU_brand cpu = CPU_brand::AMD;
+
+bool b = (fuel == cpu);     // Will be false!! Use -Wenum-compare the avoid this
+```
+
+`enum class` can inherit. With this you can specify the underlying type, which can guarantee the size of enumerations:
+```
+enum class Color : char { red, blue };	         // compact representation
+
+enum class TrafficLight { red, yellow, green };  // by default, the underlying type is int
+
+enum EE : unsigned long { EE1 = 1, EE2 = 2, EEbig = 0xFFFFFFF0U };
+```
+
+Switch case using enum class:
+```
+switch (color)
+{
+  case Color::Red : 
+    /*do something*/
+    break;
+  case Color::Blue :
+    /*do something*/
+    break;
+}
+```
+
 ## Range based for loop
+
+Most of the time you iterate through on all of the elements in a container. For this case the for loop can be simplified.
+```
+int arr[] = {2,3,4,5};
+
+for (auto i : arr)
+{
+    std::cout << i << std::endl;
+}
+
+std::vector<int> vec = {6,7,8,9};
+
+for (auto &i : vec)               // Capture by reference
+{
+    i += 2;                        // Elements in the vec are modified
+    std::cout << i << std::endl;
+}
+
+for (int i : { 1, 2, 3 }) 
+{ 
+  /*do something*/ 
+}
+```
 
 ## nullptr
 
-The previously used `NULL` is actually just a macro, what created many bugs
+The previously used `NULL` is actually just a macro, what created many bugs:
 ```
 #define NULL 0
 ```
