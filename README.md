@@ -65,10 +65,10 @@ auto func2 = [&n](int d){ n+= d; }  // Capture by reference. n is incremented
 ```
 You can capture all local variables by value or by reference.
 ```
-auto func = [=](int d){ n += d; }   // Capture all local variable by value
+auto func = [=](int d){ n += d; }  // Capture all local variable by value
 auto func2 = [&](int d){ n+= d; }  // Capture all local variable by reference
 ```
-You can pass a lambda as a function parameter. Check [std::for_each](#std::for_each) below
+You can pass a lambda as a function parameter. Check [std::for_each](std-for-each) below
 
 ## std::function
 
